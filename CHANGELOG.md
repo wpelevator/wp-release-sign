@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.10 (2026-11-11)
+
+- Bundle wp-release 0.21.0.
+
 ## 0.3.9 (2026-11-07)
 
 - Bundle wp-release 0.20.2.
