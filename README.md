@@ -2,7 +2,7 @@
 
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-WP%20Release%20Sign-blue?logo=github)](https://github.com/marketplace/actions/wp-release-sign) [![Latest release](https://img.shields.io/github/v/release/wpelevator/wp-release-sign?include_prereleases&sort=semver)](https://github.com/wpelevator/wp-release-sign/releases) [![npm](https://img.shields.io/npm/v/@wpelevator/wp-release?label=wp-release)](https://www.npmjs.com/package/@wpelevator/wp-release)
 
-GitHub Action that signs release files with Ed25519 using [`@wpelevator/wp-release`](https://www.npmjs.com/package/@wpelevator/wp-release). It's named after the [`wp-release sign`](https://www.npmjs.com/package/@wpelevator/wp-release#sign) command that it runs.
+GitHub Action that signs release files with Ed25519 using [`@wpelevator/wp-release`](https://www.npmjs.com/package/@wpelevator/wp-release). It's named after the [`wp-release sign`](https://wpelevator.github.io/docs/js/wp-release/latest/signing.html) command that it runs.
 
 It writes a detached `<file>.sig` next to each file: a base64 Ed25519 signature of the raw SHA-384 digest of the file, the format that WordPress core's `verify_file_signature()` checks. Sign both the ZIP and the checksums manifest: the ZIP signature covers installs and updates, and the manifest signature covers the contents after unpacking.
 
@@ -42,7 +42,7 @@ jobs:
 
 Attach the ZIP, the manifest and all the files listed in `steps.sign.outputs.signatures` to the release. Publish the `public-key` output wherever the signatures are checked, such as the `signing_key` of [update-client](https://github.com/wpelevator/update-client), and check a signed manifest with `wp-release verify --public-key`.
 
-Sign the manifest after writing it and before zipping or deploying when it's shipped inside the plugin, because the signature covers the exact bytes of the file. See [Manifest inside the plugin](https://www.npmjs.com/package/@wpelevator/wp-release#manifest-inside-the-plugin).
+Sign the manifest after writing it and before zipping or deploying when it's shipped inside the plugin, because the signature covers the exact bytes of the file. See [Manifest inside the plugin](https://wpelevator.github.io/docs/js/wp-release/latest/checksums.html#manifest-inside-the-plugin).
 
 The action itself needs only `contents: read` for checkout; signing uses the supplied secret. Set this permission on jobs using the step examples in this README.
 
@@ -79,11 +79,11 @@ npm install --save-dev @wpelevator/wp-release
 npx wp-release sign my-plugin.1.0.0.zip my-plugin.1.0.0.checksums.json
 ```
 
-The files are the arguments of [`wp-release sign`](https://www.npmjs.com/package/@wpelevator/wp-release#sign) and `format` and `force` are `--format` and `--force`. There's no flag for the signing key, since it would show in the process list. Add `--verbose` to print the public key, which the action returns as the `public-key` output, or `--json` for the paths of the signatures. The CLI needs Node.js 22.12 or later, and has no other dependencies on the runner. Run `npx wp-release sign --help` for all options.
+The files are the arguments of [`wp-release sign`](https://wpelevator.github.io/docs/js/wp-release/latest/signing.html) and `format` and `force` are `--format` and `--force`. There's no flag for the signing key, since it would show in the process list. Add `--verbose` to print the public key, which the action returns as the `public-key` output, or `--json` for the paths of the signatures. The CLI needs Node.js 22.12 or later, and has no other dependencies on the runner. Run `npx wp-release sign --help` for all options.
 
 ## How it works
 
-[`src/run.ts`](src/run.ts) reads the inputs with [`@actions/core`](https://github.com/actions/toolkit/tree/main/packages/core), maps them to the arguments of the [`wp-release sign`](https://www.npmjs.com/package/@wpelevator/wp-release#sign) command and runs it through the `execute()` function of [`@wpelevator/wp-release`](https://www.npmjs.com/package/@wpelevator/wp-release), so the action and the CLI always behave the same. The action runs `dist/index.js`, a single file bundled with esbuild that includes `wp-release` and all other dependencies, so nothing is installed from npm when the action runs. The tooling version is fixed by the action ref you pin.
+[`src/run.ts`](src/run.ts) reads the inputs with [`@actions/core`](https://github.com/actions/toolkit/tree/main/packages/core), maps them to the arguments of the [`wp-release sign`](https://wpelevator.github.io/docs/js/wp-release/latest/signing.html) command and runs it through the `execute()` function of [`@wpelevator/wp-release`](https://www.npmjs.com/package/@wpelevator/wp-release), so the action and the CLI always behave the same. The action runs `dist/index.js`, a single file bundled with esbuild that includes `wp-release` and all other dependencies, so nothing is installed from npm when the action runs. The tooling version is fixed by the action ref you pin.
 
 ## Development
 
