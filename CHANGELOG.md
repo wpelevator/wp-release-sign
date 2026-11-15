@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.11 (2026-11-15)
+
+- Link the README to the reorganized wp-release docs pages. ([`4e6600f`](https://github.com/wpelevator/basement/commit/4e6600f4fddd75706f3b0c33d328d51e26d5ffd9))
+- Bundle wp-release 0.21.1.
+
 ## 0.3.10 (2026-11-11)
 
 - Bundle wp-release 0.21.0.
